@@ -33,7 +33,7 @@ Provided in multiple formats
 - **reldi_1to2h.pt** - Standard model checkpoint
 
 ### Data Processing Objects
-- labelScaler.pkl, scalerLog.pkl, scalerRobust.pkl and scalerStandard.pkl
+- labelScaler.pkl, scalerRobust.pkl and scalerStandard.pkl
 
 ### Directories
 - **data/** - Input datasets and processed data files

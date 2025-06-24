@@ -4,10 +4,28 @@ import constants
 import numpy as np
 import utils
 from spacepy import coordinates as coord
+from sklearn.utils.validation import check_array
 
 # Physical constants (SI units)
 m_p = 1.6726e-27    # Proton mass (kg)
 mu_0 = 4.0e-7 * np.pi  # Permeability of free space (H/m)
+
+def scaleLog(X):
+    """
+    Log scaling function.
+    It applies a log transformation to the input data, adding 1 to avoid log(0).
+    """
+    X = check_array(X, ensure_2d=False)
+    if np.any(X < 0):
+        raise ValueError("Input data must be non-negative for log scaling.")
+    return np.log1p(X)  # log(1 + X)
+
+def inverseScaleLog(X):
+    """
+    Inverse of the log scaling function.
+    It applies the inverse of the log transformation to the input data.
+    """
+    return np.expm1(X)
 
 def preprocess_ace_imf(
     df,

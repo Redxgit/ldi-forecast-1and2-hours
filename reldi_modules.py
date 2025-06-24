@@ -192,39 +192,6 @@ class WeightedQuantileLoss(nn.Module):
         weighted_loss = loss * combined_weights
 
         return torch.mean(weighted_loss)
-    
-class LogScaler(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        """
-        Fit the scaler (no actual fitting is needed for a log transformation).
-        """
-        X = check_array(X, ensure_2d=True, dtype=np.float32)
-        self.n_features_in_ = X.shape[1]
-        return self
-
-    def transform(self, X):
-        """
-        Apply the logarithmic transformation to the data.
-        """
-        check_is_fitted(self, "n_features_in_")
-        X = check_array(X, ensure_2d=True, dtype=np.float32)
-        if X.shape[1] != self.n_features_in_:
-            raise ValueError(
-                f"Expected {self.n_features_in_} features, got {X.shape[1]} instead."
-            )
-        return np.log1p(X)
-
-    def inverse_transform(self, X):
-        """
-        Apply the inverse of the logarithmic transformation (exponential).
-        """
-        check_is_fitted(self, "n_features_in_")
-        X = check_array(X, ensure_2d=True, dtype=np.float32)
-        if X.shape[1] != self.n_features_in_:
-            raise ValueError(
-                f"Expected {self.n_features_in_} features, got {X.shape[1]} instead."
-            )
-        return np.expm1(X)
 
 
 class BFE_Metric():
