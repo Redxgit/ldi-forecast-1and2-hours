@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+*.zip
+ldi-torch/
+manuel-figs/
+
+
 # Distribution / packaging
 .Python
 build/

@@ -121,6 +121,8 @@ def plot_comparison_bfe(
     plot_sym_bars=False,
     plot_asy_bars=False,
     xlabel_title=None,
+    station = None,
+    is_global=False,
 ):
     all_preds = df.copy()
     comparison = df_to_compare.copy()
@@ -160,7 +162,7 @@ def plot_comparison_bfe(
     )["diff_comparison_abs"].mean()
 
     if ax is None:
-        fig, ax = plt.subplots(1, 1, figsize=(13, 6))
+        fig, ax = plt.subplots(1, 1, figsize=(13, 7))
     ax.plot(
         mean_diff_to_plot_by_bin.index,
         mean_diff_to_plot_by_bin.values,
@@ -200,7 +202,7 @@ def plot_comparison_bfe(
     )
 
     ax.set_ylim(0, ax.get_ylim()[1])
-    ax.tick_params(axis="both", which="major", labelsize=14, width=2, length=10)
+    ax.tick_params(axis="both", which="major", labelsize=20, width=2, length=10)
     ax.set_xlim(
         mean_diff_to_plot_by_bin.index.min(), mean_diff_to_plot_by_bin.index.max()
     )
@@ -209,10 +211,10 @@ def plot_comparison_bfe(
     twin.set_yscale("log")
     twin.grid(linestyle="--")
     if xlabel_title is None:
-        ax.set_xlabel(f"{index_column_name} (nT)", fontsize=18)
+        ax.set_xlabel(f"{index_column_name} (nT)", fontsize=23)
     else:
-        ax.set_xlabel(xlabel_title, fontsize=18)
-    ax.set_ylabel("Mean Absolute Difference (nT)", fontsize=18)
+        ax.set_xlabel(xlabel_title, fontsize=23)
+    ax.set_ylabel("Mean Absolute Difference (nT)", fontsize=23)
 
     if plot_sym_bars:
         min_sym = rounddown(df[index_column_name].min())
@@ -260,21 +262,22 @@ def plot_comparison_bfe(
                             color=COLOR_SUPERINTENSE,
                         )
 
-    twin.set_ylabel("Bin count", fontsize=18)
-    twin.tick_params(axis="y", which="major", labelsize=14, width=2, length=10)
+    twin.set_ylabel("Bin count", fontsize=23)
+    twin.tick_params(axis="y", which="major", labelsize=20, width=2, length=10)
     twin.tick_params(axis="y", which="minor", width=1, length=5)
 
     ax.set_title(
-        f"Diff BFE ({title_to_compare} - {title}): {mean_diff_comparison_to_plot_by_bin.mean() - mean_diff_to_plot_by_bin.mean():.3f}",
-        fontsize=18,
+        f"Diff {'Global ' if is_global else ''}BFE{' ' + station if station else ''} ({title_to_compare} - {title}): {mean_diff_comparison_to_plot_by_bin.mean() - mean_diff_to_plot_by_bin.mean():.3f}",
+        fontsize=25,
     )
 
     leg = ax.legend(
-        bbox_to_anchor=(0.5, 1.2),
+        bbox_to_anchor=(0.5, 1.25),
         loc="upper center",
         ncol=3,
         fancybox=True,
-        prop={"size": 14},
+        prop={"size": 20},
+        facecolor="none",
     )
     leg.get_lines()[-1].set_linewidth(12.0)
     leg.get_lines()[-1].set_alpha(0.15)
@@ -479,7 +482,7 @@ def plot_evaluation_bfe_quantile(
     )
 
     ax.set_ylim(0, ax.get_ylim()[1])
-    ax.tick_params(axis="both", which="major", labelsize=16, width=2, length=10)
+    ax.tick_params(axis="both", which="major", labelsize=20, width=2, length=10)
     ax.tick_params(axis="x", which="major", pad=10)
     ax.set_xlim(mean_value_to_plot.index.min(), mean_value_to_plot.index.max())
 
@@ -488,10 +491,10 @@ def plot_evaluation_bfe_quantile(
     if full_title is None:
         ax.set_title(
             f"BFE: {bfe:.3f} | Inside 90%: {df_plot[quantile_column].mean():.3f} | {title}",
-            fontsize=20,
+            fontsize=25,
         )
     else:
-        ax.set_title(full_title, fontsize=20)
+        ax.set_title(full_title, fontsize=25)
 
     if plot_sym_bars:
         min_sym = rounddown(df_plot[original_column].min())
@@ -520,10 +523,10 @@ def plot_evaluation_bfe_quantile(
     twin.hist(df_plot[original_column], bins=bins, alpha=0.15, color="green")
     twin.set_yscale("log")
     twin.grid(linestyle="--")
-    ax.set_ylabel("Mean Absolute Difference (nT)", fontsize=20)
-    twin.set_ylabel("Bin count", fontsize=20)
-    twin.tick_params(axis="y", which="major", labelsize=16, width=2, length=10)
-    twin.tick_params(axis="y", which="minor", width=1, length=5)
+    ax.set_ylabel("Mean Absolute Difference (nT)", fontsize=23)
+    twin.set_ylabel("Bin count", fontsize=23)
+    twin.tick_params(axis="y", which="major", labelsize=20, width=2, length=15)
+    twin.tick_params(axis="y", which="minor", width=1, length=10)
     # After plotting the main graph, add the gradient colormap below
     cmap_light = LinearSegmentedColormap.from_list(
         "rg_light", [false_color, true_color]
@@ -554,10 +557,10 @@ def plot_evaluation_bfe_quantile(
     ax_color.set_xticks([])
     ax_color.set_xlim(ax.get_xlim())  # Ensure alignment with the plot above
     if xlabel_title is None:
-        ax.set_xlabel(f"{original_column}", fontsize=20)
+        ax.set_xlabel(f"{original_column}", fontsize=23)
         ax.xaxis.set_label_coords(0.5, -0.15)
     else:
-        ax.set_xlabel(xlabel_title, fontsize=20)
+        ax.set_xlabel(xlabel_title, fontsize=23)
         ax.xaxis.set_label_coords(0.5, -0.15)
     ax_color.grid(False)
     plt.setp(ax_color.spines.values(), lw=2, color="black", alpha=1)
@@ -581,7 +584,7 @@ def plot_evaluation_bfe_quantile(
         handles=handles,
         ncol=len(handles),
         fancybox=True,
-        prop={"size": 16},
+        prop={"size": 20},
         bbox_to_anchor=(0.5, 1.25 if full_title is None else 1.35),
         loc="upper center",
         edgecolor="black",
