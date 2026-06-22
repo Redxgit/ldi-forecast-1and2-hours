@@ -39,6 +39,8 @@ Provided in multiple formats
 - **data/** - Input datasets and processed data files
 - **figs/** - Generated figures and visualizations
 
+Additionally, inside the data folder, the ldi_calculation subfolder includes the H_value, spline and baseline used to calculate the LDi for all the storms depicted in the manuscript for all the stations. Additionally, there are graphs for each storm for each station showcasing the LDi calculation process.
+
 ## Requirements
 
 See [requirements.txt](requirements.txt) for the complete list of dependencies.
