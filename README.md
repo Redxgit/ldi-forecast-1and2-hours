@@ -9,6 +9,7 @@ This repository contains the implementation of machine learning models for forec
 ## Repository Structure
 
 ### Jupyter Notebooks
+
 - **[0] Storms-selection.ipynb** - Storm event selection and identification
 - **[1] LDi-cleanup.ipynb** - Data cleaning and preprocessing
 - **[2] LDi-storms.ipynb** - Storm data analysis and preparation
@@ -17,6 +18,7 @@ This repository contains the implementation of machine learning models for forec
 - **[5] metrics-evaluation.ipynb** - Comprehensive metrics evaluation
 
 ### Python Modules
+
 - **[constants.py](constants.py)** - Project constants and configuration parameters
 - **[metrics.py](metrics.py)** - Evaluation metrics and scoring functions
 - **[pre_processing.py](pre_processing.py)** - Data preprocessing utilities
@@ -25,6 +27,7 @@ This repository contains the implementation of machine learning models for forec
 - **[utils.py](utils.py)** - General utility functions
 
 ### Model Files
+
 Provided in multiple formats
 
 - **reldi_1to2h_full_model.pt** - Complete trained model
@@ -33,9 +36,11 @@ Provided in multiple formats
 - **reldi_1to2h.pt** - Standard model checkpoint
 
 ### Data Processing Objects
+
 - labelScaler.pkl, scalerRobust.pkl and scalerStandard.pkl
 
 ### Directories
+
 - **data/** - Input datasets and processed data files
 - **figs/** - Generated figures and visualizations
 
@@ -57,11 +62,11 @@ The notebooks are ready to process the data once the repository has been downloa
 
 The forecast for test storms will be generated in the **Test-model.ipynb** notebook.
 
-
 ## $LDi$ Methodology
-The method estimates the local geomagnetic disturbance by removing, from the measured horizontal magnetic field, both the slowly varying local background field and the regular solar daily variation. The procedure is performed in magnetic local time and starts by defining a nighttime reference from the values measured around local magnetic midnight, where the regular daily solar variation is expected to be small. These nighttime averages are shown in the diagnostic plots as `Means 90 mins`. A smooth curve through these nighttime reference values, labelled as `Trend` in the plots, is then used to remove the slow trend from the data. This detrending step allows the daily morphology of the regular solar variation to be analysed independently of the local baseline.
 
-For each day, a constrained smooth curve is fitted to the detrended daily profile. This curve represents the expected solar regular variation, hereafter denoted as SR, and is shown in the diagnostic plots as `Sr non corrected`. The fit is constrained so that the variation remains close to zero during the nighttime intervals, consistent with the assumption that a magnetically quiet day should not show significant oscillations around local magnetic midnight. The remaining control points, indicated as `P` in the plots, describe the daytime morphology of the daily variation. The goodness of this fit is used as an indicator of geomagnetic quietness: days whose variation is well described by the quiet-day model are selected as quiet days, whereas days with poorer agreement are considered to contain significant disturbance contributions.
+The method estimates the local geomagnetic disturbance by removing, from the measured horizontal magnetic field, both the slowly varying local background field and the regular solar daily variation. The procedure is performed in local time and starts by defining a nighttime reference from the values measured around local midnight, where the regular daily solar variation is expected to be small. These nighttime averages are shown in the diagnostic plots as `Means 90 mins`. A smooth curve through these nighttime reference values, labelled as `Trend` in the plots, is then used to remove the slow trend from the data. This detrending step allows the daily morphology of the regular solar variation to be analysed independently of the local baseline.
+
+For each day, a constrained smooth curve is fitted to the detrended daily profile. This curve represents the expected solar regular variation, hereafter denoted as SR, and is shown in the diagnostic plots as `Sr non corrected`. The fit is constrained so that the variation remains close to zero during the nighttime intervals, consistent with the assumption that a magnetically quiet day should not show significant oscillations around local midnight. The remaining control points, indicated as `P` in the plots, describe the daytime morphology of the daily variation. The goodness of this fit is used as an indicator of geomagnetic quietness: days whose variation is well described by the quiet-day model are selected as quiet days, whereas days with poorer agreement are considered to contain significant disturbance contributions.
 
 The set of quiet days identified over a sufficiently long interval is then used to estimate the slowly varying local baseline, associated with the internal and crustal contribution of the magnetic field and its long-term temporal evolution. This baseline is obtained by averaging quiet-day reference values over selected periods of the year and interpolating them with a smooth function. Thus, both the regular daily variation and the baseline are inferred from the local observations themselves, avoiding the need to rely on global geomagnetic models or external indices.
 
@@ -72,7 +77,6 @@ LD_i(t) = H(t) - \left[ B(t) + SR(t) \right],
 $$
 
 where $H(t)$ is the observed horizontal magnetic field, $B(t)$ is the local baseline, and $SR(t)$ is the estimated regular solar daily variation. The resulting residual isolates the local geomagnetic perturbation after removing both the slowly varying background field and the regular daily variation.
-
 
 ## License
 
